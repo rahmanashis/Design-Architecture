@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">Design Architecture learning map</title>
+  <desc id="desc">A flow from SOLID principles through design patterns to Onion Architecture.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b132b"/>
+      <stop offset="1" stop-color="#1c2541"/>
+    </linearGradient>
+    <linearGradient id="solid" x1="0" x2="1">
+      <stop offset="0" stop-color="#5bc0be"/>
+      <stop offset="1" stop-color="#3aafa9"/>
+    </linearGradient>
+    <linearGradient id="patterns" x1="0" x2="1">
+      <stop offset="0" stop-color="#f4a261"/>
+      <stop offset="1" stop-color="#e76f51"/>
+    </linearGradient>
+    <linearGradient id="onion" x1="0" x2="1">
+      <stop offset="0" stop-color="#e9c46a"/>
+      <stop offset="1" stop-color="#f4a261"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000" flood-opacity=".28"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#d9e2ec"/>
+    </marker>
+    <style>
+      .label { font: 700 24px system-ui, sans-serif; fill: #fff; }
+      .small { font: 400 16px system-ui, sans-serif; fill: #e6edf5; }
+      .line { stroke: #d9e2ec; stroke-width: 4; marker-end: url(#arrow); stroke-dasharray: 12 12; animation: flow 2.2s linear infinite; }
+      @keyframes flow { to { stroke-dashoffset: -48; } }
+      .node { filter: url(#shadow); }
+    </style>
+  </defs>
+  <rect width="1200" height="430" rx="28" fill="url(#bg)"/>
+  <text x="60" y="58" class="label">Design-Architecture learning path</text>
+  <text x="60" y="88" class="small">Start with principles, compare patterns, then see them assembled into layers.</text>
+
+  <line x1="350" y1="220" x2="430" y2="220" class="line"/>
+  <line x1="770" y1="220" x2="850" y2="220" class="line"/>
+
+  <g class="node">
+    <rect x="70" y="140" width="280" height="160" rx="18" fill="url(#solid)"/>
+    <text x="105" y="195" class="label">SOLID</text>
+    <text x="105" y="228" class="small">Reason about responsibilities,</text>
+    <text x="105" y="252" class="small">coupling, and abstractions.</text>
+  </g>
+  <g class="node">
+    <rect x="430" y="140" width="340" height="160" rx="18" fill="url(#patterns)"/>
+    <text x="465" y="195" class="label">Design Patterns</text>
+    <text x="465" y="228" class="small">Practice reusable solutions:</text>
+    <text x="465" y="252" class="small">Factory, Strategy, Observer, and more.</text>
+  </g>
+  <g class="node">
+    <rect x="850" y="140" width="280" height="160" rx="18" fill="url(#onion)"/>
+    <text x="885" y="195" class="label">Onion Architecture</text>
+    <text x="885" y="228" class="small">Put the ideas together with</text>
+    <text x="885" y="252" class="small">domain, service, and adapters.</text>
+  </g>
+  <text x="60" y="375" class="small">The arrows are animated in browsers that support SVG animation.</text>
+</svg>
