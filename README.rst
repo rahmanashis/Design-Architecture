@@ -1,64 +1,37 @@
-Design Architecture: Python Learning Repository
-===============================================
+Design Architecture: Python and Java Learning Repository
+========================================================
 
 .. image:: docs/architecture-flow.svg
    :alt: Animated learning path from SOLID principles to design patterns and Onion Architecture
    :align: center
 
-A small, runnable Python study repository for learning how software design ideas
-fit together. It starts with the SOLID principles, applies common design
-patterns in focused examples, and finishes with a single-file Onion Architecture
-demonstration.
+A practical software-design study repository containing runnable Python and Java
+examples for SOLID principles, design patterns, architectural patterns, and
+low-level design (LLD) systems.
 
-The examples are intentionally simple. They are meant to be read, run, changed,
-and compared rather than treated as production-ready frameworks.
+The code is intentionally educational. Most files are self-contained demos that
+let you read a direct implementation, compare an abstraction-based version, and
+then modify the example yourself.
 
-.. contents:: Table of Contents
+.. contents:: Contents
    :depth: 2
    :local:
 
 Learning path
 -------------
 
-Follow this order if you are visiting the repository for the first time:
+Use this order when starting from a fresh clone:
 
-#. Read the SOLID notebook to learn the vocabulary of responsibility,
-   extension, substitution, and abstraction.
-#. Open the ``without_*`` examples in ``Design_Patterns`` to see the problem
-   each pattern is addressing.
-#. Read the matching pattern implementation and run it.
-#. Finish with ``Onlion_Architecture/onion.py`` to see domain entities,
-   repository abstractions, services, controllers, and dependency injection in
-   one example.
+#. Learn the vocabulary in ``solid_principles/``.
+#. Study the small examples in ``design_patterns/``.
+#. Read ``architectural_patterns/onion_architecture/onion.py`` to see
+   dependency inversion and layered boundaries in one application.
+#. Practice larger systems in ``LLD_Interview_Questions/``.
+#. Use the SVG diagrams in ``docs/`` as a quick map of the repository.
 
-.. note::
+The central idea is::
 
-   The directory names ``AbstructFactory`` and ``Onlion_Architecture`` preserve
-   the names currently used by the repository. They are spelling variants of
-   ``AbstractFactory`` and ``Onion_Architecture``; do not rename them when
-   following the paths below.
-
-What is in this repository?
----------------------------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 24 56 20
-
-   * - Area
-     - What to learn
-     - Start here
-   * - SOLID
-     - Five principles for reducing coupling and keeping responsibilities clear.
-     - ``Solid/SOLID_principals.ipynb``
-   * - Design Patterns
-     - Small Python examples that contrast a direct approach with a reusable
-       pattern.
-     - ``Design_Patterns/AbstructFactory/``
-   * - Onion Architecture
-     - Dependency direction between domain, infrastructure, application
-       services, and presentation controllers.
-     - ``Onlion_Architecture/onion.py``
+   principles -> patterns -> architecture -> low-level system design
 
 Repository map
 --------------
@@ -66,45 +39,69 @@ Repository map
 ::
 
    Design-Architecture/
-   +-- README.rst                         # This guide
+   +-- README.rst
    +-- LICENSE
+   +-- .gitignore
    +-- docs/
-   |   +-- architecture-flow.svg          # Animated overview diagram
-   +-- Design_Patterns/
-   |   +-- AbstructFactory/
-   |       +-- AbstructFactory.py         # Abstract Factory
-   |       +-- Factory/
-   |       |   +-- Factory_1.py            # Factory implementation
-   |       |   +-- withoutFactory_1.py    # Direct approach
-   |       +-- Iterator/
-   |       +-- Memento/
-   |       +-- Observer/
-   |       +-- Prototype/
-   |       +-- Singleton/
-   |       +-- Strategy/
-   |       +-- Template/
-   +-- Solid/
-   |   +-- SOLID_principals.ipynb         # Guided notebook
-   +-- Onlion_Architecture/
-       +-- onion.py                       # Complete layered example
+   |   +-- architecture-flow.svg
+   |   +-- architecture-learning-map.svg
+   +-- design_patterns/
+   |   +-- README.rst
+   |   +-- creational/
+   |   |   +-- abstract_factory/
+   |   |   +-- builder/
+   |   |   +-- factory_method/
+   |   |   +-- prototype/
+   |   |   +-- singleton/
+   |   +-- structural/
+   |   |   +-- adapter/
+   |   |   +-- proxy/
+   |   +-- behavioral/
+   |       +-- iterator/
+   |       +-- memento/
+   |       +-- observer/
+   |       +-- strategy/
+   |       +-- template_method/
+   +-- solid_principles/
+   |   +-- SOLID_principles.ipynb
+   |   +-- SOLID.java
+   |   +-- Solid_OCP.java
+   |   +-- SolidPrinciples_SRP_code.java
+   +-- architectural_patterns/
+   |   +-- onion_architecture/onion.py
+   +-- LLD_Interview_Questions/
+       +-- 34 Java system-design exercises
+
+The requested future pattern directories also exist as learning-map locations.
+Git does not track empty directories, so an empty location appears after cloning
+only when it later receives a file or a ``.gitkeep`` placeholder.
 
 Prerequisites
 -------------
 
-Required:
+Python track:
 
-* Python 3.9 or newer. Python 3.9+ is recommended because the Onion example
-  uses built-in generic annotations such as ``list[Course]``.
-* A terminal and a text editor. VS Code is convenient but not required.
-* Git, if you want to clone the repository or contribute changes.
+* Python 3.9 or newer. Python 3.9+ is needed for annotations such as
+  ``list[Course]`` in the Onion example.
+* No third-party Python runtime packages are required for the scripts.
+* Jupyter Notebook or JupyterLab is optional for the SOLID notebook.
 
-Optional:
+Java track:
 
-* Jupyter Notebook or JupyterLab for ``Solid/SOLID_principals.ipynb``.
-* A Python extension and a Jupyter extension in VS Code for interactive cells.
+* JDK 11 or newer is recommended.
+* The repository does not use Maven or Gradle; the Java examples use the JDK
+  compiler and standard library.
+* Some filenames preserve their original learning-example names and may not
+  match the public Java class name exactly. Compile those files individually
+  after checking the public class declaration.
 
-There are currently no third-party runtime dependencies for the Python scripts.
-The pattern examples use only the standard library, especially ``abc``.
+General tools:
+
+* Git
+* A terminal
+* A text editor or IDE
+* VS Code is optional, with Python, Java, and Jupyter extensions useful but not
+  required.
 
 Setup
 -----
@@ -133,235 +130,214 @@ macOS or Linux::
    source .venv/bin/activate
    python --version
 
-No ``pip install`` step is needed for the scripts. To work with the notebook,
-install Jupyter only when you need it::
+The Python scripts require no ``pip install`` step. To open the notebook::
 
-   python -m pip install --upgrade pip
    python -m pip install jupyter
+   jupyter notebook solid_principles/SOLID_principals.ipynb
 
-How to run the examples
+Run the Python examples
 -----------------------
 
-Run the Onion Architecture demonstration::
+Representative commands from the repository root::
 
-   python Onlion_Architecture/onion.py
+   python design_patterns/creational/abstract_factory/AbstractFactory.py
+   python design_patterns/creational/factory_method/Factory_1.py
+   python design_patterns/behavioral/iterator/iterator.py
+   python design_patterns/behavioral/memento/memento.py
+   python design_patterns/behavioral/observer/Observer.py
+   python design_patterns/behavioral/strategy/strategy.py
+   python design_patterns/behavioral/template_method/template.py
+   python architectural_patterns/onion_architecture/onion.py
 
-It uses an in-memory ``Database`` and prints the flow through controllers,
-services, and repositories. No external database is required. The sample also
-tries to add a duplicate student ID so that the service-layer validation is
-visible in the output.
+The Abstract Factory and Strategy examples use ``input()``. Enter values such
+as ``email``, ``sms``, or ``push`` when prompted.
 
-Run a pattern example directly::
+The Onion example uses an in-memory database. It demonstrates entities,
+repository interfaces, concrete repositories, services, controllers, duplicate
+student validation, and dependency injection without requiring a real database.
 
-   python Design_Patterns/AbstructFactory/Factory/Factory_1.py
-   python Design_Patterns/AbstructFactory/Iterator/iterator.py
-   python Design_Patterns/AbstructFactory/Memento/memento.py
-   python Design_Patterns/AbstructFactory/Observer/Observer.py
-   python Design_Patterns/AbstructFactory/Singleton/Singleton.py
-   python Design_Patterns/AbstructFactory/Strategy/strategy.py
-   python Design_Patterns/AbstructFactory/Template/template.py
+Run Java examples
+-----------------
 
-Some examples request values with ``input()``. The Factory and Strategy examples
-use sender, receiver, message, and a method such as ``email``, ``sms``, or
-``push``. Follow the prompt shown in the terminal.
+Compile one self-contained demo into a temporary directory::
 
-Run the Abstract Factory example::
+   mkdir -p .java-build
+   javac -d .java-build design_patterns/creational/builder/BuilderExample2.java
+   java -cp .java-build BuilderExample2
 
-   python Design_Patterns/AbstructFactory/AbstructFactory.py
+On Windows PowerShell, use ``New-Item -ItemType Directory .java-build`` instead
+of ``mkdir -p``. The ``.gitignore`` file excludes common build output.
 
-Open the notebook with Jupyter::
+For an LLD demo, use the same pattern after checking its public class name::
 
-   jupyter notebook Solid/SOLID_principals.ipynb
+   javac -d .java-build LLD_Interview_Questions/ElevatorSystem.java
+   java -cp .java-build ElevatorSystem
 
-Or open ``Solid/SOLID_principals.ipynb`` in VS Code and run the cells from top
-to bottom. The notebook contains Markdown explanations and executable Python
-cells for SRP, OCP, and LSP, followed by a summary of ISP and DIP.
+Some LLD files are intentionally alternate versions of the same system. The
+extensionless ``LLD_Interview_Questions/PaymentGatewayLLD`` file is kept as
+learning material, while ``PaymentGatewayLLD.java`` is the normal Java source
+entry point.
 
-Design patterns included
-------------------------
+SOLID principles
+----------------
 
-Abstract Factory
-~~~~~~~~~~~~~~~~
+The ``solid_principles/`` directory contains:
 
-Path: ``Design_Patterns/AbstructFactory/AbstructFactory.py``
+* ``SOLID_principles.ipynb``: guided Markdown and Python cells for SRP, OCP,
+  and LSP, followed by summaries of ISP and DIP.
+* ``SOLID.java``: a combined teaching demo covering responsibility, extension,
+  substitution, interface segregation, and dependency inversion.
+* ``SolidPrinciples_SRP_code.java``: a focused Single Responsibility example.
+* ``Solid_OCP.java``: payment-method polymorphism for the Open-Closed Principle.
 
-Creates related objects as a family. The example chooses an email, SMS, or push
-factory. Each factory creates a sender and a formatter that belong together.
+Read the notebook first if the principles are new. Then compare the Java files
+with the Python examples in the design-pattern directories.
 
-Factory
-~~~~~~~
+Design patterns
+---------------
 
-Path: ``Design_Patterns/AbstructFactory/Factory/``
+The complete pattern guide is in ``design_patterns/README.rst``. The categories
+currently contain these examples:
 
-Centralizes object creation so the client does not need to instantiate each
-sender class directly. Compare ``Factory_1.py`` with ``withoutFactory_1.py``.
+Creational:
 
-Iterator
-~~~~~~~~
+* Abstract Factory: related product families such as payment gateways, UI
+  controls, and message senders.
+* Builder: readable construction of complex user and food-order objects.
+* Factory Method: creation of notification implementations through factories.
+* Prototype: object copying and a performance-oriented Java demonstration.
+* Singleton: shared-instance examples, including a deliberately broken
+  concurrent version for comparison.
 
-Path: ``Design_Patterns/AbstructFactory/Iterator/``
+Structural:
 
-Encapsulates traversal so client code can iterate over a collection without
-knowing how that collection stores its items. Compare the ``iterator.py`` and
-``without_iterator.py`` versions.
+* Adapter: converting incompatible payment interfaces.
+* Proxy: protecting or controlling access to a user repository.
 
-Memento
-~~~~~~~
+Behavioral:
 
-Path: ``Design_Patterns/AbstructFactory/Memento/``
+* Iterator: playlist traversal with and without an iterator abstraction.
+* Memento: text-editor state capture and restoration.
+* Observer: weather and stock updates sent to multiple observers.
+* Strategy: interchangeable discount and payment strategies.
+* Template Method: shared file-parsing algorithm steps with customizable
+  parsing behavior.
 
-Demonstrates preserving and restoring an object's state. The comparison file
-shows the cost of handling state history without a dedicated abstraction.
+The root-level payment and snake-and-ladder examples remain under
+``design_patterns/`` because they are useful demos but are not assigned to a
+single GoF category.
 
-Observer
-~~~~~~~~
+Architectural patterns
+----------------------
 
-Path: ``Design_Patterns/AbstructFactory/Observer/``
+``architectural_patterns/onion_architecture/onion.py`` is a complete,
+self-contained Onion Architecture demonstration:
 
-Shows one-to-many notification: observers are informed when a subject changes.
-The paired files make the coupling difference visible.
+* Domain entities: ``Student``, ``Course``, and ``Trainer``.
+* Abstractions: repository and service interfaces.
+* Infrastructure: in-memory database and concrete repositories.
+* Application services: business operations and duplicate-ID validation.
+* Presentation: controllers that delegate to services.
+* Composition root: dependency wiring in the main block.
 
-Prototype
-~~~~~~~~~
-
-Path: ``Design_Patterns/AbstructFactory/Prototype/``
-
-Introduces object creation by copying an existing object. The current example
-is a focused starting point for studying cloning and independent state.
-
-Singleton
-~~~~~~~~~
-
-Path: ``Design_Patterns/AbstructFactory/Singleton/``
-
-Shows controlled access to a single shared instance. Read this example with
-care: Singleton can introduce global state and should be used sparingly.
-
-Strategy
-~~~~~~~~
-
-Path: ``Design_Patterns/AbstructFactory/Strategy/``
-
-Encapsulates interchangeable behavior. Here, different message senders share a
-common interface while the factory selects the concrete strategy.
-
-Template Method
-~~~~~~~~~~~~~~~
-
-Path: ``Design_Patterns/AbstructFactory/Template/``
-
-Defines a stable algorithm structure while allowing subclasses to customize a
-specific step. Compare ``template.py`` with ``without_template.py``.
-
-Onion Architecture walkthrough
-------------------------------
-
-The file ``Onlion_Architecture/onion.py`` is intentionally self-contained. Its
-layers are represented by classes rather than separate packages:
-
-* Domain: ``Student``, ``Course``, and ``Trainer`` entities plus repository and
-  service interfaces.
-* Infrastructure: in-memory ``Database`` and concrete repository classes.
-* Application/service: ``StudentService``, ``CourseService``, and
-  ``TrainerService`` contain business operations and validation.
-* Presentation: controller classes receive requests and delegate to services.
-* Composition root: the ``if __name__ == "__main__"`` block wires concrete
-  dependencies together.
-
-The important dependency direction is::
+The dependency direction points inward::
 
    Controller -> Service interface -> Repository interface
                                       ^
                                       |
                          concrete in-memory repository
 
-The service depends on an abstraction, not directly on the database. This makes
-it possible to replace the in-memory repository with a real database adapter
-without rewriting the core service logic.
+Low-level design interview systems
+----------------------------------
 
-How to study each example
--------------------------
+``LLD_Interview_Questions/`` contains 34 Java exercises. They are grouped by
+the system they model rather than by file order:
 
-For each pattern, use this short loop:
+* Elevator: basic, advanced, concurrent, class-based, and LLD versions.
+* Vending machine: basic, advanced, state-based, and demo versions.
+* Logger: simple, configurable, file/console, and asynchronous versions.
+* Parking lot: basic, advanced, class-based, and pricing-strategy versions.
+* Payment gateway: mid-level, repository-based, and locking versions.
+* Pub/Sub: basic broker, decorator-based retry, and dead-letter-queue version.
+* URL shortener: simple, Base62, hashing, repository, and observer variants.
+* Notification system: basic and preference-aware asynchronous versions.
+* Load balancer: basic and class-oriented examples.
+* Movie booking, optimistic locking, and ride booking standalone systems.
 
-#. Read the ``without_*`` file first and identify the repeated code or tight
-   coupling.
-#. Read the pattern version and locate the abstraction, context, subject, or
-   factory.
-#. Run both files and compare their output.
-#. Change one concrete class or add one new behavior.
-#. Observe whether the pattern lets you extend the example without modifying
-   unrelated code.
-#. Write down the trade-off: patterns add structure, but structure is useful
-   only when it solves a real design problem.
+Recommended LLD study loop:
+
+#. Choose one system and read the simplest filename first.
+#. Identify entities, services, repositories, interfaces, and state transitions.
+#. Compare the basic and advanced versions where both exist.
+#. Compile and run the smallest self-contained Java file.
+#. Add one feature, such as another payment method, vehicle type, or observer.
+#. Record which abstraction changed and which client code stayed unchanged.
+
+No database, web server, or external service is required for the examples. Most
+systems use in-memory collections and simulated providers.
+
+How to learn effectively
+------------------------
+
+For every example:
+
+#. Read the code before running it.
+#. Run the smallest version and observe the output.
+#. Find the class that owns the main responsibility.
+#. Trace dependencies from the entry point to the business logic.
+#. Compare the direct version with the abstraction-based version.
+#. Make one small change and run it again.
+#. Note both the benefit and the cost of the added abstraction.
 
 What this repository is not
 ---------------------------
 
-* It is not a production framework or a packaged Python library.
-* It does not provide a web API, persistent database, or deployment setup.
-* It does not include automated tests yet; the runnable scripts are learning
-  demonstrations.
-* The examples favor clarity over exhaustive validation, typing, error
-  handling, and packaging conventions.
+* It is not a production framework or packaged library.
+* It does not provide deployment configuration, a web API, or persistent data.
+* It does not yet contain a complete automated test suite.
+* The examples favor clarity and comparison over exhaustive validation.
 
 Common questions
 ----------------
 
-Do I need to install a database?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-No. ``onion.py`` uses an in-memory database made from Python lists. It is a
-teaching substitute for a real persistence adapter.
+Do I need every design pattern before studying LLD?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+No. Learn SOLID first, then study the pattern relevant to the system you want to
+build. For a vending machine, start with State and Factory ideas. For payments,
+start with Strategy, Factory, and repository abstractions. For notifications,
+start with Observer and Strategy.
 
-Do I need every design pattern before learning Onion Architecture?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-No. Start with the SOLID notebook, then read the Onion example. The patterns
-are supporting lessons that help explain the abstractions used in the larger
-example.
-
-Why are there two files for many patterns?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``without_*`` file shows a direct or tightly coupled approach. The other
-file applies the pattern so you can compare the design trade-offs rather than
-memorize a definition.
-
-Why does the repository contain spelling variants in directory names?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The existing paths are ``AbstructFactory`` and ``Onlion_Architecture``. They are
-kept to avoid breaking links and commands. New documentation should use the
-canonical terms in prose while preserving the actual paths in code examples.
-
-Why does a script wait for input?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The Abstract Factory and Strategy demonstrations are interactive. Enter the
-values requested in the terminal. For repeatable experiments, replace the
-``input()`` calls with variables in a local copy.
-
-Can I run the notebook without VS Code?
+Why are some pattern directories empty?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Yes. Install Jupyter and run ``jupyter notebook Solid/SOLID_principals.ipynb``.
-A browser will open the notebook interface.
+They are reserved learning locations. Git does not version empty directories;
+add a real example or a ``.gitkeep`` file when a location needs to persist.
 
-Where should I start changing the code?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Start with one ``without_*`` file and its paired pattern file. Add one new
-sender, observer, strategy, or repository implementation. Then run the example
-again and inspect which classes needed modification.
+Why are some filenames inconsistent?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The repository contains classroom examples created at different times. Their
+paths and names are preserved to avoid silently changing source files. Use the
+README paths exactly when running them.
+
+Where should a new example go?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Put it in the matching design-pattern category, SOLID directory, architectural
+pattern directory, or LLD collection. Add a focused README note when the new
+example introduces a new learning path.
 
 Contribution checklist
 ----------------------
 
-Before committing a change:
+Before committing changes:
 
-* Keep examples small and focused on one design idea.
-* Preserve the paired ``without_*`` comparison where it exists.
-* Use the standard library unless a dependency is essential to the lesson.
-* Run every changed Python script.
-* If changing the notebook, run its Python cells from top to bottom.
-* Update this guide when paths, prerequisites, or the learning path change.
-* Keep generated environments such as ``.venv`` out of commits.
+* Keep one design idea per example.
+* Preserve comparison files such as ``without_*`` where useful.
+* Run changed Python files and compile changed Java files.
+* Validate notebook JSON after notebook edits.
+* Keep build output, virtual environments, caches, and secrets ignored.
+* Update both this root guide and the focused design-pattern guide when paths
+  or learning order changes.
 
 License
 -------
 
-See ``LICENSE`` for the repository's license terms.
+See ``LICENSE`` for the repository license terms.
