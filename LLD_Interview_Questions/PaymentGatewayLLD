@@ -1,0 +1,253 @@
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.*;
+
+// ======================================================
+// ENUM
+// ======================================================
+
+enum PaymentStatus {
+    CREATED,
+    PROCESSING,
+    SUCCESS,
+    FAILED
+}
+
+// ======================================================
+// ENTITY
+// ======================================================
+
+class Payment {
+
+    private final String paymentId;
+    private final String orderId;
+    private final double amount;
+    private final String userId;
+
+    private PaymentStatus status;
+
+    public Payment(String paymentId, String orderId, double amount, String userId) {
+        this.paymentId = paymentId;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.userId = userId;
+        this.status = PaymentStatus.CREATED;
+    }
+
+    public synchronized void updateStatus(PaymentStatus status) {
+        this.status = status;
+    }
+
+    public String getPaymentId() { return paymentId; }
+    public String getOrderId() { return orderId; }
+    public double getAmount() { return amount; }
+    public String getUserId() { return userId; }
+    public PaymentStatus getStatus() { return status; }
+
+    @Override
+    public String toString() {
+        return "Payment{id=" + paymentId +
+                ", order=" + orderId +
+                ", amount=" + amount +
+                ", status=" + status + "}";
+    }
+}
+
+// ======================================================
+// PAYMENT METHOD STRATEGY
+// ======================================================
+
+interface PaymentMethod {
+    void validate();
+}
+
+class CardPayment implements PaymentMethod {
+
+    private final String cardNumber;
+
+    public CardPayment(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    @Override
+    public void validate() {
+        if (cardNumber == null || cardNumber.length() < 12) {
+            throw new RuntimeException("Invalid card number");
+        }
+    }
+}
+
+class UpiPayment implements PaymentMethod {
+
+    private final String upiId;
+
+    public UpiPayment(String upiId) {
+        this.upiId = upiId;
+    }
+
+    @Override
+    public void validate() {
+        if (upiId == null || !upiId.contains("@")) {
+            throw new RuntimeException("Invalid UPI ID");
+        }
+    }
+}
+
+// ======================================================
+// PAYMENT PROVIDER STRATEGY
+// ======================================================
+
+interface PaymentProvider {
+    boolean process(Payment payment);
+}
+
+class DummyProvider implements PaymentProvider {
+
+    @Override
+    public boolean process(Payment payment) {
+        System.out.println("Processing payment via external provider...");
+        return true;
+    }
+}
+
+// ======================================================
+// REPOSITORY
+// ======================================================
+
+class PaymentRepository {
+
+    private final Map<String, Payment> payments = new ConcurrentHashMap<>();
+    private final Map<String, String> orderIndex = new ConcurrentHashMap<>();
+    private final Map<String, String> idempotencyIndex = new ConcurrentHashMap<>();
+
+    public void save(Payment payment, String idempotencyKey) {
+
+        payments.put(payment.getPaymentId(), payment);
+        orderIndex.put(payment.getOrderId(), payment.getPaymentId());
+        idempotencyIndex.put(idempotencyKey, payment.getPaymentId());
+    }
+
+    public Payment findByOrderId(String orderId) {
+
+        String paymentId = orderIndex.get(orderId);
+        if (paymentId == null) return null;
+
+        return payments.get(paymentId);
+    }
+
+    public Payment findByIdempotencyKey(String key) {
+
+        String paymentId = idempotencyIndex.get(key);
+        if (paymentId == null) return null;
+
+        return payments.get(paymentId);
+    }
+}
+
+// ======================================================
+// LOCK MANAGER
+// ======================================================
+
+class LockManager {
+
+    private final Map<String, ReentrantLock> locks = new ConcurrentHashMap<>();
+
+    public ReentrantLock getLock(String key) {
+        return locks.computeIfAbsent(key, k -> new ReentrantLock());
+    }
+}
+
+// ======================================================
+// SERVICE
+// ======================================================
+
+class PaymentService {
+
+    private final PaymentRepository repository;
+    private final PaymentProvider provider;
+    private final LockManager lockManager;
+
+    public PaymentService(PaymentRepository repository,
+                          PaymentProvider provider,
+                          LockManager lockManager) {
+        this.repository = repository;
+        this.provider = provider;
+        this.lockManager = lockManager;
+    }
+
+    public Payment initiatePayment(
+            String paymentId,
+            String orderId,
+            double amount,
+            String userId,
+            String idempotencyKey,
+            PaymentMethod method) {
+
+        ReentrantLock lock = lockManager.getLock(orderId);
+        lock.lock();
+
+        try {
+
+            // 1️⃣ Idempotency check
+            Payment existingByKey = repository.findByIdempotencyKey(idempotencyKey);
+            if (existingByKey != null) {
+                return existingByKey;
+            }
+
+            // 2️⃣ Prevent double payment
+            Payment existingOrderPayment = repository.findByOrderId(orderId);
+            if (existingOrderPayment != null &&
+                    existingOrderPayment.getStatus() == PaymentStatus.SUCCESS) {
+                throw new RuntimeException("Order already paid");
+            }
+
+            // 3️⃣ Validate payment method
+            method.validate();
+
+            // 4️⃣ Create payment
+            Payment payment = new Payment(paymentId, orderId, amount, userId);
+            payment.updateStatus(PaymentStatus.PROCESSING);
+
+            // 5️⃣ Call provider
+            boolean success = provider.process(payment);
+
+            payment.updateStatus(success ? PaymentStatus.SUCCESS : PaymentStatus.FAILED);
+
+            // 6️⃣ Save payment
+            repository.save(payment, idempotencyKey);
+
+            return payment;
+
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+// ======================================================
+// MAIN
+// ======================================================
+
+public class PaymentGatewayLLD {
+
+    public static void main(String[] args) {
+
+        PaymentRepository repository = new PaymentRepository();
+        PaymentProvider provider = new DummyProvider();
+        LockManager lockManager = new LockManager();
+
+        PaymentService service =
+                new PaymentService(repository, provider, lockManager);
+
+        Payment payment = service.initiatePayment(
+                "PAY-101",
+                "ORDER-500",
+                2000,
+                "USER-9",
+                "IDEMP-500",
+                new CardPayment("1234567890123456")
+        );
+
+        System.out.println(payment);
+    }
+}
