@@ -1,7 +1,7 @@
 Design Patterns Learning Guide
 ==============================
 
-.. image:: architecture-learning-map.svg
+.. image:: ../docs/architecture-learning-map.svg
    :alt: Animated map from SOLID principles through creational, structural, and behavioral patterns
    :align: center
 
