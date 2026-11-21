@@ -39,7 +39,7 @@ abstract class CoffeeDecorator implements Coffee {
     }
 }
 
-//Create MilkDecorator
+//Create Concrete MilkDecorator
 class MilkDecorator extends CoffeeDecorator {
 
     public MilkDecorator(Coffee coffee) {
@@ -56,7 +56,8 @@ class MilkDecorator extends CoffeeDecorator {
 }
 
 
-//Create SugarDecorator
+
+//Create Concrete SugarDecorator
 class SugarDecorator extends CoffeeDecorator {
 
     public SugarDecorator(Coffee coffee) {
@@ -73,7 +74,8 @@ class SugarDecorator extends CoffeeDecorator {
 }
 
 
-// ChocolateDecorator
+
+// Create Concrete ChocolateDecorator
 class ChocolateDecorator extends CoffeeDecorator {
 
     public ChocolateDecorator(Coffee coffee) {
