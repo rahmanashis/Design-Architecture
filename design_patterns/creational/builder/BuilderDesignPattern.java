@@ -53,6 +53,7 @@ class User {
 
 public class BuilderDesignPattern {
     public static void main(String[] args) {
-        User user = User.UserBuilder("pradeep").
+        User user = new User.UserBuilder("pradeep").age(25).phone("1234567890").address("123 Main St").build();
+        System.out.println(user);
     }
 }
