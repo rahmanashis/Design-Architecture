@@ -37,6 +37,7 @@ htmlcov/
 # IDE and operating-system files
 .vscode/
 .idea/
+*.iml
 *.swp
 *.swo
 .DS_Store
