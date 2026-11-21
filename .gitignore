@@ -14,6 +14,7 @@ build/
 dist/
 *.egg-info/
 .eggs/
+out/
 pip-wheel-metadata/
 
 # Test and coverage output
