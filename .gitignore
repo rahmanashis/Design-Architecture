@@ -27,7 +27,7 @@ htmlcov/
 
 # Jupyter temporary files
 .ipynb_checkpoints/
-
+uml/
 # Type-checker and linter caches
 .mypy_cache/
 .pyre/
@@ -38,6 +38,7 @@ htmlcov/
 .vscode/
 .idea/
 *.iml
+
 *.swp
 *.swo
 .DS_Store
