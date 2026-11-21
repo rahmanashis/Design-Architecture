@@ -1,4 +1,4 @@
-package design_patterns.structural.decoder;
+package design_patterns.structural.decorator;
 public class DecoratorLoggingDemo {
 
     // =======================
