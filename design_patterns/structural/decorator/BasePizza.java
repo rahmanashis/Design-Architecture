@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 public abstract class BasePizza {
     private static final Logger LOGGER = Logger.getLogger(BasePizza.class.getName());
 
-    public abstract int cost();
+    public abstract int getCost();
 
     // This is the main method to demonstrate the Decorator pattern
     public static void main(String[] args) {
@@ -13,28 +13,28 @@ public abstract class BasePizza {
         pizza = new ExtraCheese(pizza);
         pizza = new Mushroom(pizza);
 
-        int totalCost = pizza.cost();
+        int totalCost = pizza.getCost();
         LOGGER.info(() -> "Total cost: " + totalCost);
     }
 }
 
 class Farmhouse extends BasePizza {
     @Override
-    public int cost() {
+    public int getCost() {
         return 200;
     }
 }
 
 class VegDelight extends BasePizza {
     @Override
-    public int cost() {
+    public int getCost() {
         return 150;
     }
 }
 
 class Margarita extends BasePizza {
     @Override
-    public int cost() {
+    public int getCost() {
         return 100;
     }
 }
@@ -56,8 +56,8 @@ class ExtraCheese extends ToppingDecorator {
     }
 
     @Override
-    public int cost() {
-        return this.basePizza.cost() + 50;
+    public int getCost() {
+        return this.basePizza.getCost() + 50;
     }
 }
 
@@ -67,7 +67,7 @@ class Mushroom extends ToppingDecorator {
     }
 
     @Override
-    public int cost() {
-        return this.basePizza.cost() + 30;
+    public int getCost() {
+        return this.basePizza.getCost() + 30;
     }
 }
