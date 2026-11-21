@@ -57,6 +57,7 @@ class ExtraCheese extends ToppingDecorator {
 
     @Override
     public int getCost() {
+        //basePiza is the object of BasePizza class and feild so we can't access from pizza.getCost().
         return this.basePizza.getCost() + 50;
     }
 }
